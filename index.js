@@ -61,20 +61,27 @@ app.get('/callback',async(req, res)=>{
         request.post(authOptions,async function(error, response, body) {
             if (!error && response.statusCode === 200) {
                 var access_token = body.access_token;
-                // res.send({
-                //     'access_token': access_token
-                // });
-                const response = await axios.get("https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg", {
-                    headers: {
-                      "Authorization": `Bearer ${access_token}`
-                    }
+                res.send({
+                    'access_token': access_token
                 });
-
-                res.send(response)
             }
         });
     }
 });
+
+app.get("/album",async(req,res)=>{
+    try {
+        await axios.get("https://api.spotify.com/v1/me/albums" , {
+        headers:{
+            Authorization:"Bearer BQD3KH7M7_dka5_x9P6Db1C6RHIcwNwuuRE48YyquiRSrWSQTSQiiRywsL0RJSJM4qaaOXujZW7koXBSGxGj3pBNgFVj_uTRsobtOJh4KNgGm4HMXwWD2M39bfPYN_oX1ey_gRoC-fagDU8WXbrn1MLwotBBkJZJcVzPYqTJYbj0y18wyBccRi8XeXBiMywrw8vRrSagkAStPdfg4007uA"
+        }
+    })
+    .then(res=>console.log(res.json()))
+    } catch (error) {
+        console.log(error);
+    }
+    
+})
 
 app.listen(port,()=>{
     console.log("Server listening",port);
